@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TKA Paket 1 - SMP Rahmat Surabaya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .option-card:hover { transform: translateY(-2px); transition: all 0.2s; }
+        .feedback-text { font-weight: bold; margin-top: 0.5rem; display: none; }
+        .question-card { transition: all 0.3s ease; }
+        .stimulus-box { background-color: rgba(255, 255, 255, 0.7); border-radius: 0.5rem; padding: 1.25rem; margin-bottom: 1rem; border: 1px solid #bae6fd; line-height: 1.6; }
+        .badge-indicator { background-color: #3b82f6; color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 9999px; margin-bottom: 8px; display: inline-block; font-weight: 600; text-transform: uppercase; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen py-10 px-4">
+    <div class="max-w-3xl mx-auto">
+        <header class="text-center mb-10">
+            <h2 class="text-xl font-semibold text-blue-600 uppercase tracking-wide">SMP Rahmat Surabaya</h2>
+            <h1 class="text-3xl font-bold text-slate-800 mt-1">Uji Coba TKA Paket 1</h1>
+            <p class="text-slate-600 mt-2 font-medium">Penyusun: Elok Fitri Audina, S.Pd.</p>
+            <div class="mt-3 inline-flex items-center space-x-2 bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold border border-blue-200">
+                <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+                <span>Mata Uji: Bahasa Indonesia</span>
+            </div>
+        </header>
+
+        <!-- Form Nama Siswa -->
+        <div id="student-form" class="bg-white p-8 rounded-2xl shadow-xl border-t-8 border-blue-600 mb-8">
+            <div class="flex flex-col space-y-5">
+                <div class="border-b pb-3">
+                    <h2 class="text-2xl font-bold text-slate-800">Data Peserta</h2>
+                    <p class="text-slate-500 text-sm">Silakan pilih identitas Anda untuk memulai simulasi ujian.</p>
+                </div>
+                
+                <div>
+                    <label class="block font-bold text-slate-700 mb-2">Pilih Kelas:</label>
+                    <select id="class-select" onchange="updateStudentList()" class="w-full p-3.5 border-2 border-slate-100 rounded-xl outline-none bg-slate-50 focus:border-blue-500 focus:bg-white transition-all">
+                        <option value="">-- Pilih Kelas --</option>
+                        <option value="9A">Kelas 9A</option>
+                        <option value="9B">Kelas 9B</option>
+                        <option value="9C">Kelas 9C</option>
+                        <option value="9D">Kelas 9D</option>
+                        <option value="9E">Kelas 9E</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-2">Pilih Nama:</label>
+                    <select id="student-name-select" class="w-full p-3.5 border-2 border-slate-100 rounded-xl outline-none bg-slate-50 focus:border-blue-500 focus:bg-white transition-all" disabled>
+                        <option value="">-- Pilih Nama Anda --</option>
+                    </select>
+                </div>
+
+                <button onclick="startQuiz()" id="start-btn" class="bg-blue-600 text-white py-4 px-4 rounded-xl hover:bg-blue-700 transition-all font-bold shadow-lg shadow-blue-200 disabled:bg-slate-300 disabled:shadow-none mt-4" disabled>
+                    Buka Lembar Soal
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-content" class="hidden">
+            <!-- Header Identitas -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-5 rounded-2xl mb-8 shadow-lg flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center font-bold text-xl border border-white/30">
+                        <span id="initial-name">?</span>
+                    </div>
+                    <div>
+                        <p class="text-blue-100 text-[10px] uppercase font-bold tracking-widest">Siswa Terdaftar</p>
+                        <p class="text-lg font-bold leading-tight" id="display-name"></p>
+                    </div>
+                </div>
+                <div class="text-right border-l border-white/20 pl-4">
+                    <p class="text-blue-100 text-[10px] uppercase font-bold tracking-widest">Kelas</p>
+                    <p class="text-xl font-black" id="display-class"></p>
+                </div>
+            </div>
+
+            <div id="quiz-container" class="space-y-8">
+                <!-- Soal 1 -->
+                <div class="question-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
+                    <span class="badge-indicator">Indikator 1: Istilah Bidang</span>
+                    <p class="font-bold text-lg mb-4 text-slate-800 leading-relaxed">Manakah kalimat di bawah ini yang menggunakan istilah teknis dalam bidang **Geologi** secara tepat?</p>
+                    <div class="grid grid-cols-1 gap-3">
+                        <button onclick="check(this, false)" class="option-card w-full text-left p-4 border border-slate-200 bg-slate-50 rounded-xl hover:bg-blue-50">A. Inflasi bulan ini menyebabkan harga bahan pokok naik signifikan.</button>
+                        <button onclick="check(this, true)" class="option-card w-full text-left p-4 border border-slate-200 bg-slate-50 rounded-xl hover:bg-blue-50">B. Tektonisme lempeng di wilayah tersebut memicu munculnya patahan baru.</button>
+                        <button onclick="check(this, false)" class="option-card w-full text-left p-4 border border-slate-200 bg-slate-50 rounded-xl hover:bg-blue-50">C. Aransemen lagu itu dibuat sangat megah oleh komposer muda.</button>
+                        <button onclick="check(this, false)" class="option-card w-full text-left p-4 border border-slate-200 bg-slate-50 rounded-xl hover:bg-blue-50">D. Diagnosis dokter menunjukkan bahwa pasien terkena gejala demam berdarah.</button>
+                    </div>
+                    <div class="feedback-text text-sm mt-3"></div>
+                </div>
+
+                <!-- Soal 2 -->
+                <div class="question-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
+                    <span class="badge-indicator">Indikator 2: Latar Teks Fiksi</span>
+                    <div class="stimulus-box text-sm italic">
+                        "Lampu-lampu jalan mulai temaram bersaing dengan cahaya rembulan. Suara jangkrik bersahutan di balik rimbunnya pohon kamboja, sementara aroma dupa tipis-tipis tercium dari teras rumah-rumah warga yang tenang."
+                    </div>
+                    <p class="font-bold text-lg mb-4 text-slate-800">Berdasarkan kosakata yang digunakan, latar waktu dan tempat yang paling tepat adalah...</p>
+                    <div class="grid grid-cols-1 gap-3">
+                        <button onclick="check(this, true)" class="option-card w-full text-left p-4 border border-slate-200 bg-slate-50 rounded-xl hover:bg-blue-50">A. Malam hari di lingkungan pedesaan yang asri</button>
+                        <button onclick="check(this, false)" class="option-card w-full text-left p-4 border border-slate-200 bg-slate-50 rounded-xl hover:bg-blue-50">B. Sore hari di sebuah pasar tradisional yang ramai</button>
+                        <button onclick="check(this, false)" class="option-card w-full text-left p-4 border border-slate-200 bg-slate-50 rounded-xl hover:bg-blue-50">C. Pagi buta di pusat perkotaan yang modern</button>
+                        <button onclick="check(this, false)" class="option-card w-full text-left p-4 border border-slate-200 bg-slate-50 rounded-xl hover:bg-blue-50">D. Siang hari di pemakaman umum yang sunyi</button>
+                    </div>
+                    <div class="feedback-text text-sm mt-3"></div>
+                </div>
+
+                <!-- Soal 3 -->
+                <div class="question-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-indigo-500"></div>
+                    <span class="badge-indicator">Indikator 3: Objek Deskripsi</span>
+                    <div class="stimulus-box text-sm">
+                        "Museum Trowulan menyimpan ribuan artefak peninggalan Kerajaan Majapahit, mulai dari terakota, koin kuno, hingga prasasti batu yang menceritakan kejayaan nusantara."
+                    </div>
+                    <p class="font-bold text-lg mb-4 text-slate-800">Objek utama yang dideskripsikan dalam kutipan teks tersebut adalah peninggalan benda bersejarah.</p>
+                    <div class="flex space-x-4">
+                        <button onclick="check(this, true)" class="option-card flex-1 p-4 border-2 border-slate-100 bg-slate-50 rounded-xl font-black text-blue-700 hover:bg-blue-100 text-center">BENAR</button>
+                        <button onclick="check(this, false)" class="option-card flex-1 p-4 border-2 border-slate-100 bg-slate-50 rounded-xl font-black text-red-700 hover:bg-red-100 text-center">SALAH</button>
+                    </div>
+                    <div class="feedback-text text-sm mt-3"></div>
+                </div>
+
+                <!-- Soal 4 -->
+                <div class="question-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-indigo-500"></div>
+                    <span class="badge-indicator">Indikator 4: Informasi Tersurat</span>
+                    <div class="stimulus-box text-sm">
+                        "Pemerintah kota Surabaya menyediakan layanan bus sekolah gratis bagi siswa pemegang kartu pelajar yang berlaku mulai pukul 06.00 hingga 17.00 WIB."
+                    </div>
+                    <p class="font-bold text-lg mb-4 text-slate-800">Pernyataan: "Layanan bus sekolah gratis dapat diakses oleh semua masyarakat umum tanpa syarat kartu pelajar."</p>
+                    <div class="flex space-x-4">
+                        <button onclick="check(this, false)" class="option-card flex-1 p-4 border-2 border-slate-100 bg-slate-50 rounded-xl font-black text-blue-700 hover:bg-blue-100 text-center">SESUAI</button>
+                        <button onclick="check(this, true)" class="option-card flex-1 p-4 border-2 border-slate-100 bg-slate-50 rounded-xl font-black text-red-700 hover:bg-red-100 text-center">TIDAK SESUAI</button>
+                    </div>
+                    <div class="feedback-text text-sm mt-3"></div>
+                </div>
+
+                <!-- Soal 5 -->
+                <div class="question-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
+                    <span class="badge-indicator">Indikator 13: Prediksi Peristiwa</span>
+                    <div class="stimulus-box text-sm">
+                        <b>Prosedur Stek Batang:</b><br>
+                        1. Pilih batang pohon yang sehat.<br>
+                        2. Potong miring batang sepanjang 10-15 cm.<br>
+                        3. Oleskan hormon perangsang akar.<br>
+                        4. Tanam di media tanah yang gembur dan lembap.
+                    </div>
+                    <p class="font-bold text-lg mb-4 text-slate-800">Apa yang kemungkinan terjadi jika langkah nomor 4 dilakukan di tanah yang sangat kering dan terpapar sinar matahari terik?</p>
+                    <div class="grid grid-cols-1 gap-3">
+                        <button onclick="check(this, false)" class="option-card w-full text-left p-4 border border-slate-200 bg-slate-50 rounded-xl hover:bg-blue-50">A. Pertumbuhan tunas akan menjadi lebih cepat.</button>
+                        <button onclick="check(this, true)" class="option-card w-full text-left p-4 border border-slate-200 bg-slate-50 rounded-xl hover:bg-blue-50">B. Batang akan mengering dan sel-selnya mati sebelum sempat berakar.</button>
+                        <button onclick="check(this, false)" class="option-card w-full text-left p-4 border border-slate-200 bg-slate-50 rounded-xl hover:bg-blue-50">C. Akar akan tumbuh lebih kuat mencari air.</button>
+                        <button onclick="check(this, false)" class="option-card w-full text-left p-4 border border-slate-200 bg-slate-50 rounded-xl hover:bg-blue-50">D. Hormon perangsang akar bekerja lebih maksimal.</button>
+                    </div>
+                    <div class="feedback-text text-sm mt-3"></div>
+                </div>
+            </div>
+
+            <!-- Footer Hasil -->
+            <div id="result" class="mt-12 text-center hidden">
+                <div class="p-10 bg-white rounded-3xl shadow-2xl border-4 border-blue-500">
+                    <h3 class="text-3xl font-black text-slate-800 mb-2">Simulasi Selesai</h3>
+                    <div class="text-7xl font-black text-blue-600 my-6" id="score-text">0</div>
+                    <p id="evaluation-text" class="text-slate-600 font-medium mb-6"></p>
+                    <button onclick="location.reload()" class="bg-slate-800 text-white py-4 px-10 rounded-2xl hover:bg-black font-bold">Ulangi Simulasi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const studentsData = {
+            "9A": ["ADELIA MAULIDA AZZAHRA", "ALMIRA PUTRI ANDINI HARIYANTO", "ALVINO RADTYA GUNAWAN", "AMIRA ZYVA SELINA SHASMEN", "ARVI PUTRA RAMAHDANI", "AULIA RACHMADANI"],
+            "9B": ["ACHMAD RAFA PUTRA ANDIKA", "BAGYSTA HAMAS FADILLAH", "AHMAD ZAKY KURNIAWAN", "AISYAH FEBRIANA MAULIDA"],
+            "9C": ["AALIYAH NABILA KUSUMAWARDHANI", "ADELIA KURNIA SARI", "AGUNG BAYU LESMONO", "AINUR ROHIM"],
+            "9D": ["ACHMAD FATCHUR RAHMAN", "ACHMAD AINUN ROFIQ", "ACHMAD ICHSAN MAULANA"],
+            "9E": ["AHMAD AINUL YAQIN", "ANAYLA PUTRI DWI MAHARANI", "ARDATA RAMADHANU"]
+        };
+
+        let correctCount = 0;
+        let answered = 0;
+        const totalQuestions = 5;
+
+        function updateStudentList() {
+            const classVal = document.getElementById('class-select').value;
+            const nameSelect = document.getElementById('student-name-select');
+            const startBtn = document.getElementById('start-btn');
+            nameSelect.innerHTML = '<option value="">-- Pilih Nama Anda --</option>';
+            if (classVal && studentsData[classVal]) {
+                nameSelect.disabled = false;
+                startBtn.disabled = false;
+                studentsData[classVal].forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    opt.textContent = name;
+                    nameSelect.appendChild(opt);
+                });
+            } else {
+                nameSelect.disabled = true;
+                startBtn.disabled = true;
+            }
+        }
+
+        function startQuiz() {
+            const nameVal = document.getElementById('student-name-select').value;
+            const classVal = document.getElementById('class-select').value;
+            if (!nameVal || !classVal) return;
+            document.getElementById('display-name').innerText = nameVal;
+            document.getElementById('display-class').innerText = classVal;
+            document.getElementById('initial-name').innerText = nameVal.charAt(0);
+            document.getElementById('student-form').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function check(element, isCorrect) {
+            const parent = element.parentElement;
+            const questionBox = parent.parentElement;
+            const feedback = questionBox.querySelector('.feedback-text');
+            const buttons = parent.querySelectorAll('button');
+            
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-60');
+            });
+            feedback.style.display = 'block';
+
+            if (isCorrect) {
+                element.classList.remove('bg-slate-50', 'opacity-60');
+                element.classList.add('bg-green-100', 'border-green-500', 'text-green-800');
+                feedback.innerText = "Jawaban Anda Benar!";
+                feedback.classList.add('text-green-600');
+                correctCount++;
+            } else {
+                element.classList.remove('bg-slate-50', 'opacity-60');
+                element.classList.add('bg-red-100', 'border-red-500', 'text-red-800');
+                feedback.innerText = "Jawaban Kurang Tepat.";
+                feedback.classList.add('text-red-600');
+            }
+
+            answered++;
+            if (answered === totalQuestions) {
+                setTimeout(showFinalResult, 800);
+            }
+        }
+
+        function showFinalResult() {
+            const resDiv = document.getElementById('result');
+            const scoreDisplay = document.getElementById('score-text');
+            const evalText = document.getElementById('evaluation-text');
+            const studentName = document.getElementById('display-name').innerText;
+            
+            const finalScore = Math.round((correctCount / totalQuestions) * 100);
+            
+            resDiv.classList.remove('hidden');
+            scoreDisplay.innerText = finalScore;
+            evalText.innerHTML = `Selamat <b>${studentName}</b>, kamu telah menyelesaikan simulasi dengan menjawab ${correctCount} dari ${totalQuestions} soal secara benar.`;
+            resDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
